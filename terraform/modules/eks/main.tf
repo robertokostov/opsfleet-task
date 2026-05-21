@@ -54,7 +54,7 @@ resource "aws_eks_cluster" "this" {
   vpc_config {
     subnet_ids              = var.private_subnet_ids
     endpoint_private_access = true
-    endpoint_public_access  = true  # flip to false once you have VPN/bastion access
+    endpoint_public_access  = true # flip to false once you have VPN/bastion access
     security_group_ids      = [aws_security_group.cluster.id]
   }
 
@@ -156,8 +156,8 @@ resource "aws_eks_node_group" "system" {
 
 locals {
   addons = {
-    vpc-cni    = {}
-    coredns    = {
+    vpc-cni = {}
+    coredns = {
       configuration_values = jsonencode({
         tolerations = [{
           key      = "CriticalAddonsOnly"
