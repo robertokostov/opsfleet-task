@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-flexible
+  namespace: default
+  labels:
+    app: demo-flexible
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-flexible
+  template:
+    metadata:
+      labels:
+        app: demo-flexible
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: demo-flexible
+                topologyKey: kubernetes.io/hostname
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: nginx
+          image: nginx:stable-alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
